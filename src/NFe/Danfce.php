@@ -66,11 +66,11 @@ class Danfce extends DaCommon
 
     protected $bloco1H = 18.0; //cabecalho
     protected $bloco2H = 12.0; //informação fiscal
-    
+
     protected $bloco3H = 0.0; //itens
-    protected $bloco4H = 13.0; //totais
+    protected $bloco4H = 19.5; //totais
     protected $bloco5H = 0.0; //formas de pagamento
-    
+
     protected $bloco6H = 10.0; //informação para consulta
     protected $bloco7H = 20.0; //informações do consumidor
     protected $bloco8H = 50.0; //informações do consumidor
@@ -144,7 +144,7 @@ class Danfce extends DaCommon
             $this->fontePadrao = $font;
         }
     }
-    
+
     /**
      * Seta a impressão para NFCe completa ou Simplificada
      *
@@ -154,7 +154,7 @@ class Danfce extends DaCommon
     {
         $this->flagResume = $flag;
     }
-    
+
     /**
      * Marca como cancelada
      */
@@ -162,7 +162,7 @@ class Danfce extends DaCommon
     {
         $this->canceled = true;
     }
-    
+
     /**
      * Registra via do estabelecimento quando a impressção for offline
      */
@@ -170,7 +170,7 @@ class Danfce extends DaCommon
     {
         $this->via = "Via Estabelecimento";
     }
-    
+
     /**
      * Habilita a impressão de duas vias quando NFCe for OFFLINE
      *
@@ -236,17 +236,17 @@ class Danfce extends DaCommon
 
         $y = $this->blocoI(); //cabecalho
         $y = $this->blocoII($y); //informação cabeçalho fiscal e contingência
-        
+
         $y = $this->blocoIII($y); //informação dos itens
         $y = $this->blocoIV($y); //informação sobre os totais
         $y = $this->blocoV($y); //informação sobre pagamento
-        
+
         $y = $this->blocoVI($y); //informações sobre consulta pela chave
         $y = $this->blocoVII($y); //informações sobre o consumidor e dados da NFCe
         $y = $this->blocoVIII($y); //QRCODE
         $y = $this->blocoIX($y); //informações sobre tributos
         $y = $this->blocoX($y); //creditos
-        
+
         $ymark = $maxH/4;
         if ($this->tpAmb == 2) {
             $this->pdf->setTextColor(120, 120, 120);
@@ -300,7 +300,7 @@ class Danfce extends DaCommon
             );
             $this->pdf->setTextColor(0, 0, 0);
         }
-        
+
         if (!$this->canceled && $this->tpEmis == 9 && $this->offline_double) {
             $this->setViaEstabelecimento();
             //não está cancelada e foi emitida OFFLINE e está ativada a dupla impressão
@@ -346,7 +346,7 @@ class Danfce extends DaCommon
         $wprint = $this->paperwidth - (2 * $this->margem);
         $this->bloco3H = $this->calculateHeightItens($wprint * $this->descPercent);
         $this->bloco5H = $this->calculateHeightPag();
-        
+
         $length = $this->bloco1H //cabecalho
             + $this->bloco2H //informação fiscal
             + $this->bloco3H //itens
