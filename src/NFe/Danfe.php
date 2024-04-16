@@ -688,6 +688,7 @@ class Danfe extends DaCommon
      */
     protected function anfaveaDANFE($cdata = '')
     {
+        $origcdata = $cdata;
         if ($cdata == '') {
             return '';
         }
@@ -731,7 +732,15 @@ class Danfe extends DaCommon
         $cdata = str_replace('<FONTE IBPT>', '', $cdata);
         //carrega o xml CDATA em um objeto DOM
         $dom = new Dom();
-        $dom->loadXML($cdata, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+
+        // esse código é arriscado porque as vezes vai aparecer um texto que vai quebrar o parser, por ex
+        // <infCpl>EM CASO DE INADIMPLEMENTO VENCERA ANTECIPADAMENTE AS DEMAIS PARCELAS. <<< SR. CLIENTE, FAVOR CONFERIR AS MERCADORIAS NO ATO DA ENTREGA. NAO ACEITAREMOS RECLAMACOES POSTERIORES. >>>;Contra Apresentacao;CLI: 224503 PED: 00057696 VEN: 2727;Val.Aprox.Tributos, Total:R$ 1.246,51, Municipio:R$ 0,00, Estadual:R$ 542,50, Federal:R$ 704,01 Fonte:IBPT</infCpl>
+        try {
+            $dom->loadXML($cdata, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+        } catch (\Exception $e) {
+            return $origcdata; // retorna o valor da tag que veio para a função, antes das modificações
+        }
+
         //$xml = $dom->saveXML();
         //grupo CDATA infADprod
         $id   = $dom->getElementsByTagName('id')->item(0);
