@@ -396,7 +396,13 @@ class Damdfe extends DaCommon
             $resp['valida'] = false;
             $resp['message'][] =  "MDFe EMITIDA EM HOMOLOGAÇÃO";
         }
-        $retEvento = $this->mdfeProc->getElementsByTagName('retEventoMDFe')->item(0);
+        
+        if (isset($this->mdfeProc)) {
+            $retEvento = $this->mdfeProc->getElementsByTagName('retEventoMDFe')->item(0);
+        } else {
+            $retEvento = null;
+        }
+        
         $cStat = $this->getTagValue($this->mdfeProc, "cStat");
         $tpEvento = $this->getTagValue($this->mdfeProc, "tpEvento");
         if ($cStat == '101'
