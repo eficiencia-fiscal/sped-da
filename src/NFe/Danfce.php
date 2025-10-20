@@ -405,7 +405,7 @@ class Danfce extends DaCommon
             ? $this->dom->getElementsByTagName('urlChave')->item(0)->nodeValue : null;
         if (!empty($this->infProt)) {
             $cStat = $this->getTagValue($this->infProt, 'cStat');
-            if ($cStat != 100) {
+            if ($cStat != 100 && $cStat != 150) {
                 $this->canceled = true;
             } elseif (!empty($retEvento = $this->nfeProc->getElementsByTagName('retEvento')->item(0))) {
                 $infEvento = $retEvento->getElementsByTagName('infEvento')->item(0);
